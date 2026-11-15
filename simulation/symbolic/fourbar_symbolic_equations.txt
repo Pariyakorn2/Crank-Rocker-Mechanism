@@ -1,0 +1,19 @@
+P = -2*c*(g + a*cos(th2))
+Q = -2*a*c*sin(th2)
+R = a^2 - b^2 + c^2 + g^2 + 2*a*g*cos(th2)
+
+theta4 (circuit 1) = 2*atan(((4*c^2*(g + a*cos(th2))^2 - (a^2 - b^2 + c^2 + g^2 + 2*a*g*cos(th2))^2 + 4*a^2*c^2*sin(th2)^2)^(1/2) + 2*a*c*sin(th2))/(2*c*(g + a*cos(th2)) + a^2 - b^2 + c^2 + g^2 + 2*a*g*cos(th2)))
+
+theta3 = atan2(c*sin(th4) - a*sin(th2), c*cos(th4) - a*cos(th2) - g)
+
+w3 = -(a*w2*sin(th2 - th4))/(b*sin(th3 - th4))
+
+w4 = -(a*w2*sin(th2 - th3))/(c*sin(th3 - th4))
+
+mu = pi - acos((a^2 - b^2 - c^2 + g^2 + 2*a*g*cos(th2))/(2*b*c))
+
+Newton-Euler 9x9 system A_F * x_F = b_F, x_F = [F12x F12y F32x F32y F43x F43y F14x F14y T2]^T
+LaTeX:
+ w_3 = -\frac{a\,w_{2}\,\sin\left(\mathrm{th}_{2}-\mathrm{th}_{4}\right)}{b\,\sin\left(\mathrm{th}_{3}-\mathrm{th}_{4}\right)}
+ w_4 = -\frac{a\,w_{2}\,\sin\left(\mathrm{th}_{2}-\mathrm{th}_{3}\right)}{c\,\sin\left(\mathrm{th}_{3}-\mathrm{th}_{4}\right)}
+ \mu = \pi -\mathrm{acos}\left(\frac{a^2+2\,\cos\left(\mathrm{th}_{2}\right)\,a\,g-b^2-c^2+g^2}{2\,b\,c}\right)
