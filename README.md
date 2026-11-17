@@ -174,16 +174,3 @@ The real Fusion 360 `.step` parts (`cr2_ground.step`, `cr2_link4.step`, `cr2_han
 ![Built 3D-Printed Crank-Rocker Mechanism](media/built_mechanism.jpg)
 
 The physical prototype was 3D-printed in PLA matching the exact Fusion 360 CAD dimensions ($g = 100\text{ mm}$, $a = 50\text{ mm}$, $b = 150\text{ mm}$, $c = 140\text{ mm}$) and color-coded layout (blue ground stand, white/grey crank disc with black grip handle, green coupler, red/orange rocker) mounted on a tabletop/wall base within an A4 footprint.
-
----
-
-## How to Run (MATLAB R2026a)
-
-**Requirements:** MATLAB R2026a with **Simulink**, **Simscape**, **Simscape Multibody**, and **Symbolic Math Toolbox**.
-
-1. Clone or download this repository.
-2. Open [`RUN_ME.m`](RUN_ME.m) in MATLAB and press **Run**.
-3. The script automatically:
-   - Rebuilds [`fourbar_v2_model.slx`](simulation/multibody/fourbar_v2_model.slx) with local `.step` paths, runs the 3D Simscape Multibody simulation, and opens **Multibody Explorer** (press **Play** for 3D animation).
-   - Executes [`fourbar_symbolic.m`](simulation/symbolic/fourbar_symbolic.m) to verify all symbolic kinematic and dynamic force results against Simscape.
-   - Launches [`fourbar_realtime.m`](simulation/symbolic/fourbar_realtime.m) for live interactive playback.
