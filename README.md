@@ -175,9 +175,9 @@ The real Fusion 360 `.step` parts (`cr2_ground.step`, `cr2_link4.step`, `cr2_han
 
 | Variable | Link | Colour in Physical Prototype | Pin-to-Pin Length |
 | :---: | :--- | :--- | :---: |
-| **`g`** | **Link 1: Ground** | Blue base stand | $100\text{ mm}$ ($O_2$–$O_4$) |
-| **`a`** | **Link 2: Crank Disc** | White disc (+ black grip handle on pin $A$) | $50\text{ mm}$ ($O_2$–$A$, disc $r = 67.5\text{ mm}$) |
-| **`b`** | **Link 3: Coupler** | Green bar | $150\text{ mm}$ ($A$–$B$) |
-| **`c`** | **Link 4: Rocker** | Red bar *(orange in Simscape)* | $140\text{ mm}$ ($O_4$–$B$) |
+| **`g`** | **Link 1: Ground** | Blue base stand | $100\text{ mm}$ ($O_2\text{–}O_4$) |
+| **`a`** | **Link 2: Crank Disc** | White disc (+ black grip handle on pin $A$) | $50\text{ mm}$ ($O_2\text{–}A$, disc $r = 67.5\text{ mm}$) |
+| **`b`** | **Link 3: Coupler** | Green bar | $150\text{ mm}$ ($A\text{–}B$) |
+| **`c`** | **Link 4: Rocker** | Red bar *(orange in Simscape)* | $140\text{ mm}$ ($O_4\text{–}B$) |
 
 The physical prototype was 3D-printed in PLA matching the exact Fusion 360 CAD dimensions above and mounted on a rigid base within an A4 footprint. *(Original unlabeled photo: [`media/built_mechanism.jpg`](media/built_mechanism.jpg))*
