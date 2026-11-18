@@ -12,7 +12,6 @@ w4 = -(a*w2*sin(th2 - th3))/(c*sin(th3 - th4))
 
 mu = pi - acos((a^2 - b^2 - c^2 + g^2 + 2*a*g*cos(th2))/(2*b*c))
 
-Newton-Euler 9x9 system A_F * x_F = b_F, x_F = [F12x F12y F32x F32y F43x F43y F14x F14y T2]^T
 LaTeX:
  w_3 = -\frac{a\,w_{2}\,\sin\left(\mathrm{th}_{2}-\mathrm{th}_{4}\right)}{b\,\sin\left(\mathrm{th}_{3}-\mathrm{th}_{4}\right)}
  w_4 = -\frac{a\,w_{2}\,\sin\left(\mathrm{th}_{2}-\mathrm{th}_{3}\right)}{c\,\sin\left(\mathrm{th}_{3}-\mathrm{th}_{4}\right)}

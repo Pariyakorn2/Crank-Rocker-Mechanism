@@ -1,6 +1,6 @@
 # Crank–Rocker Four-Bar Mechanism
 
-Term project for **2103-322 Design of Mechanism (Mech Machinery)** — kinematic synthesis/analysis, symbolic dynamic force analysis, Simscape Multibody CAD simulation, and a 3D-printed physical prototype of a planar **Crank–Rocker four-bar linkage**.
+Term project for **2103-322 Design of Mechanism (Mech Machinery)** — kinematic synthesis/analysis, symbolic kinematic analysis, Simscape Multibody CAD simulation, and a 3D-printed physical prototype of a planar **Crank–Rocker four-bar linkage**.
 
 ---
 
@@ -89,11 +89,11 @@ Unlike an ideal constant-transmission linkage, a compact quick-return crank–ro
 - **$\mu_{\max} = 62.182^\circ$** at $\theta_2 = 0^\circ$ (good force transmission)
 - **$\mu_{\min} = 19.463^\circ$** at $\theta_2 = 180^\circ$ (minimum distance $|A O_4| = g - a = 50\text{ mm}$)
 - **Poor-transmission interval ($\mu < 40^\circ$):** occurs for **$\theta_2 \in [104.92^\circ, 255.08^\circ]$** (spanning the fast return stroke).
-- **Engineering impact:** Because transmitted tangential force scales with $\sin\mu$ while joint bearing load scales with $1/\sin\mu$, operating near $\theta_2 = 180^\circ$ ($\sin 19.46^\circ \approx 0.333$) triples the normal bearing reaction required per unit output torque and coincides with peak rocker deceleration/acceleration ($\alpha_{4,\text{peak}} = -67.3\text{ rad/s}^2$, $|F_{O_2}|_{\text{peak}} = 0.917\text{ N}$). In the physical PLA prototype, keeping friction low at pins $A$ and $B$ is therefore essential through this sector.
+- **Engineering impact:** Because transmitted tangential force scales with $\sin\mu$ while joint bearing load scales with $1/\sin\mu$, operating near $\theta_2 = 180^\circ$ ($\sin 19.46^\circ \approx 0.333$) triples the normal bearing reaction required per unit output torque and coincides with peak rocker deceleration/acceleration ($\alpha_{4,\text{peak}} = -3862\text{ deg/s}^2$). In the physical PLA prototype, keeping friction low at pins $A$ and $B$ is therefore essential through this sector.
 
 ---
 
-## Part II: Symbolic Math (Position, Velocity, Acceleration & Dynamic Forces)
+## Part II: Symbolic Math (Position, Velocity & Acceleration)
 
 All equations were derived symbolically using MATLAB's **Symbolic Math Toolbox** in [`simulation/symbolic/fourbar_symbolic.m`](simulation/symbolic/fourbar_symbolic.m) (see exported equations in [`fourbar_symbolic_equations.txt`](simulation/symbolic/fourbar_symbolic_equations.txt) and $1^\circ$ resolution table in [`fourbar_symbolic_table.csv`](simulation/symbolic/fourbar_symbolic_table.csv)).
 
@@ -115,31 +115,14 @@ $$
 \omega_3 = -\frac{a\omega_2 \sin(\theta_2 - \theta_4)}{b\sin(\theta_3 - \theta_4)}, \qquad \omega_4 = -\frac{a\omega_2 \sin(\theta_2 - \theta_3)}{c\sin(\theta_3 - \theta_4)}
 $$
 
-and $(\alpha_3, \alpha_4)$ follow from $\frac{d}{dt}[\omega_3; \omega_4]$ at constant crank speed $\omega_2 = 2\pi\text{ rad/s}$ ($1\text{ rev/s}$ CCW, $\alpha_2 = 0$).
+and $(\alpha_3, \alpha_4)$ follow from $\frac{d}{dt}[\omega_3; \omega_4]$ at constant crank speed $\omega_2 = 360\text{ deg/s}$ ($1\text{ rev/s}$ CCW, $\alpha_2 = 0$).
 
 ![Symbolic Kinematics and Transmission Angle](media/symbolic_kinematics.png)
 
-- **Dynamic Force & Input Torque Analysis (Planar Newton–Euler $9\times 9$ System):**
-
-Using the exact PLA CAD link masses, CoM positions, and $I_{zz}$ inertias (including pin $A$, pin $B$, and handle mass), the 9 planar rigid-body equilibrium equations for Links 2, 3, and 4 are assembled symbolically via `equationsToMatrix`:
-
-$$
-A_F(\theta_2, \theta_3, \theta_4)\,\mathbf{x}_F = \mathbf{b}_F(\theta_2, \theta_3, \theta_4, \omega_3, \omega_4, \alpha_3, \alpha_4)
-$$
-
-where $\mathbf{x}_F = [F_{12x}, F_{12y}, F_{32x}, F_{32y}, F_{43x}, F_{43y}, F_{14x}, F_{14y}, T_2]^T$.
-
-![Symbolic Dynamic Forces and Crank Torque](media/symbolic_forces.png)
-
 | Quantity (at $\omega_2 = 1\text{ rev/s}$, PLA CAD) | Peak / Range |
 |---|---|
-| Rocker angular velocity $\omega_4$ | $-6.605 \dots +2.728\text{ rad/s}$ |
-| Rocker angular acceleration $\alpha_4$ | $-67.33 \dots +44.86\text{ rad/s}^2$ |
-| Crank axle reaction force $\|F_{O_2}\|$ | $\max 0.9174\text{ N}$ |
-| Crank–coupler pin force $\|F_A\|$ | $\max 0.9012\text{ N}$ |
-| Coupler–rocker pin force $\|F_B\|$ | $\max 0.7569\text{ N}$ |
-| Rocker pivot force $\|F_{O_4}\|$ | $\max 0.7045\text{ N}$ |
-| Input crank torque $T_2$ | $-21.69 \dots +30.87\text{ mN}\cdot\text{m}$ |
+| Rocker angular velocity $\omega_4$ | $-377.2 \dots +156.5\text{ deg/s}$ |
+| Rocker angular acceleration $\alpha_4$ | $-3862 \dots +2574\text{ deg/s}^2$ |
 
 An interactive real-time dashboard with moving velocity/acceleration vectors is also included in [`simulation/symbolic/fourbar_realtime.m`](simulation/symbolic/fourbar_realtime.m).
 
@@ -147,16 +130,14 @@ An interactive real-time dashboard with moving velocity/acceleration vectors is 
 
 ## Part III: Simscape Multibody CAD Simulation
 
-The real Fusion 360 `.step` parts (`cr2_ground.step`, `cr2_link4.step`, `cr2_handle.step`, `cr2_link3.step`, `cr2_link2.step`) are assembled programmatically in [`simulation/multibody/fourbar_cad_v2.m`](simulation/multibody/fourbar_cad_v2.m) into [`fourbar_v2_model.slx`](simulation/multibody/fourbar_v2_model.slx) with PLA density $\rho = 1240\text{ kg/m}^3$, closed-loop revolute joints $J_1 \dots J_4$, free-grip joint $J_5$, and force/torque sensing over 3 crank revolutions ($3\text{ s}$, `ode23t`).
+The real Fusion 360 `.step` parts (`cr2_ground.step`, `cr2_link4.step`, `cr2_handle.step`, `cr2_link3.step`, `cr2_link2.step`) are assembled programmatically in [`simulation/multibody/fourbar_cad_v2.m`](simulation/multibody/fourbar_cad_v2.m) into [`fourbar_v2_model.slx`](simulation/multibody/fourbar_v2_model.slx) with PLA density $\rho = 1240\text{ kg/m}^3$, closed-loop revolute joints $J_1 \dots J_4$, and free-grip joint $J_5$, simulated over 3 crank revolutions ($3\text{ s}$, `ode23t`).
 
 ### Verification: Symbolic vs. Simscape Multibody (3,125 steps)
 
 | Metric | Max Absolute Difference |
 |---|---:|
 | Rocker angle $\theta_4$ | $1.18 \times 10^{-10}\text{ deg}$ |
-| Rocker angular velocity $\omega_4$ | $4.99 \times 10^{-12}\text{ rad/s}$ |
-| Crank input torque $T_2$ | $1.41 \times 10^{-5}\text{ N}\cdot\text{m}$ |
-| Joint reaction forces ($\|F_{O_2}\|, \|F_A\|, \|F_B\|, \|F_{O_4}\|$) | $\le 1.75 \times 10^{-6}\text{ N}$ |
+| Rocker angular velocity $\omega_4$ | $2.86 \times 10^{-10}\text{ deg/s}$ |
 
 ![Simscape Multibody vs Symbolic Comparison](media/simscape_comparison.png)
 
@@ -164,7 +145,12 @@ The real Fusion 360 `.step` parts (`cr2_ground.step`, `cr2_link4.step`, `cr2_han
 
 ![Crank-Rocker Animation](media/crank_rocker.gif)
 
-- Download full video: [`media/crank_rocker.avi`](media/crank_rocker.avi)
+### Kinematic Simulation Video (`.avi`)
+
+- **Video file:** [`media/crank_rocker.avi`](media/crank_rocker.avi) — one full crank revolution ($\theta_2 = 0^\circ \dots 360^\circ$, 120 frames at 24 fps, $1100 \times 540$ px).
+- **Left:** kinematic diagram driven by the closed-form (symbolic) solution, which matches the Simscape run (ground, crank, coupler, rocker, rocker working sector, path of $B$ and coupler-midpoint curve).
+- **Right:** rocker output angle $\theta_4$ and transmission angle $\mu$ (with the $40^\circ$ guideline) versus $\theta_2$ (axes $0^\circ$–$360^\circ$, ticks every $90^\circ$), with a cursor following the animation; the title shows the live $\theta_2$, $\theta_4$ and $\mu$.
+
 - Simulation table: [`simulation/multibody/fourbar_v2_results.csv`](simulation/multibody/fourbar_v2_results.csv)
 
 ---
